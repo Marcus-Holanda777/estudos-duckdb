@@ -17,6 +17,7 @@
    /*
     *  CARREGA BASE DIMENÇÕES
     */
+
    CREATE OR REPLACE MACRO dimensions(file)
    AS 'C:\dimensions\' || file;
      
