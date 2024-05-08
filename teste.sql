@@ -12,14 +12,13 @@
     *  LER TODOS OA ARQUIVOS .parquet DENTRO DA PASTA
     */
    CREATE OR REPLACE MACRO data_lake(tipo, ano, mes)
-   AS 'c:\vendas_uc\data_lake\' || format('{}\{}\{:02d}', tipo, ano, mes) || '\*.parquet';
+   AS "c:\vendas_uc\data_lake\" || format("{}\{}\{:02d}", tipo, ano, mes) || "\*.parquet";
      
    /*
     *  CARREGA BASE DIMENÇÕES
     */
-
    CREATE OR REPLACE MACRO dimensions(file)
-   AS 'C:\dimensions\' || file;
+   AS "C:\dimensions\" || file;
      
    /*
     *  MACRO QUE RETORNA UMA TABELA, DE VENDAS
