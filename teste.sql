@@ -3,8 +3,8 @@
 
    -- CONFIGURACOES
    SET preserve_insertion_order = FALSE;
-   SET temp_directory = 'c:\arquivos\temp.temp';
-   SET memory_limit = '45G';
+   SET temp_directory = "c:\arquivos\temp.temp";
+   SET memory_limit = "45G";
 
    /*
     *  FUNCAO PARA IMPORTAR OS DADOS DE
@@ -41,18 +41,18 @@
 	   )
 	   FROM show_tbl
 	   SELECT 
-	      COLUMNS(colunas[1])::date AS 'periodo',
-	      COLUMNS(colunas[2])       AS 'filial',
-	      COLUMNS(colunas[3])       AS 'cod',
-	      COLUMNS(colunas[4])       AS 'venda',
-	      COLUMNS(col_etiqueta)     AS 'etiqueta'
+	      COLUMNS(colunas[1])::date AS "periodo",
+	      COLUMNS(colunas[2])       AS "filial",
+	      COLUMNS(colunas[3])       AS "cod",
+	      COLUMNS(colunas[4])       AS "venda",
+	      COLUMNS(col_etiqueta)     AS "etiqueta"
     );
    
    
     -- CARREGA AS DIMENÇÕES
     CREATE OR REPLACE TABLE mestre
     AS
-     FROM read_parquet(dimensions('prod_mestre.parquet'));
+     FROM read_parquet(dimensions("prod_mestre.parquet"));
    
        /*
         *  UNIR TABELA DE VENDA E PREVENDA
@@ -67,23 +67,23 @@
        (
           WITH inner_vendas AS
           (
-	        FROM import_vendas('COSMOSMOV', ano, mes,
-	        'NUMERO_AUTORIZ_PAGUEMENOS',
+	        FROM import_vendas("COSMOSMOV", ano, mes,
+	        "NUMERO_AUTORIZ_PAGUEMENOS",
 	          [
-	             'MVVC_DT_MOV', 
-	             'MVVC_CD_FILIAL_MOV',
-	             'MVVP_NR_PRD', 
-	             'MVVP_VL_PRD_VEN'
+	             "MVVC_DT_MOV", 
+	             "MVVC_CD_FILIAL_MOV",
+	             "MVVP_NR_PRD", 
+	             "MVVP_VL_PRD_VEN"
 	          ]
 	        )
 	        UNION all
-	        FROM import_vendas('PRE_VENDA', ano, mes,
-	        'VD_COD_ETIQUETA_ULCH',
+	        FROM import_vendas("PRE_VENDA", ano, mes,
+	        "VD_COD_ETIQUETA_ULCH",
 	          [
-	             'VC_DH_VENDA', 
-	             'VC_CD_FILIAL', 
-	             'VD_CD_PRODUTO', 
-	             'VD_VL_PRODUTO_COM_DESCONTO'
+	             "VC_DH_VENDA", 
+	             "VC_CD_FILIAL", 
+	             "VD_CD_PRODUTO", 
+	             "VD_VL_PRODUTO_COM_DESCONTO"
 	          ]
 	        )
 	      ),
@@ -108,7 +108,7 @@
 		       v.venda::double AS venda
 		   FROM gera_venda(2024, 1) AS v 
 		   INNER JOIN MAIN.MESTRE AS m ON v.cod = m.COD
-	    ) TO 'c:\arquivos\UC_VENDAS.xlsx'
+	    ) TO "c:\arquivos\UC_VENDAS.xlsx"
 		WITH (
 		   FORMAT GDAL,
 		   DRIVER 'xlsx'
